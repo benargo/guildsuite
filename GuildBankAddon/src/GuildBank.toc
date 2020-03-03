@@ -1,0 +1,15 @@
+## Interface: 11302
+## Title: Guild Bank
+## Version: 1.0.0
+## Notes: Guild Bank addon for <The Order>
+## Author: Alex, Ben
+## SavedVariablesPerCharacter: InterfaceOptions, Stock
+## DefaultState: enabled
+
+DebugMode.lua
+InterfaceOptions.lua
+Commands.lua
+Item\Item.lua
+Item\Methods.lua
+Stock\Stock.lua
+GuildBank.lua
