@@ -34,16 +34,16 @@ echo "Hello. Welcome to the installer script for the Guild Bank addon."
 # Prompt the user for their 'Addons' directory...
 echo "Please select your WoW Classic 'Addons' folder."
 $wowdir = Get-WoWDir
-echo "wowdir = $wowdir"
+echo "Addons folder set to '$wowdir'."
 
 # Create the 'GuildBank' folder in $wowdir, if it doesn't already exist...
-#...
+New-Item -Path $wowdir -Name "GuildBank" -ItemType "directory"
 
 # Copy all the files from ./src to $wowdir/GuildBank...
-#...
+Copy-Item -Path "$PSScriptRoot\"
 
 # End script...
-echo "`nPress any key to [Exit]..."
+echo "`nInstall complete. Press any key to [Exit]..."
 $x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyUp")
 If ($x.VirtualKeyCode -eq '0') {
     Exit
