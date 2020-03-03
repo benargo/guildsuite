@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutThisProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MainViewSwitcher = new System.Windows.Forms.TabControl();
-            this.AuthenticationPage = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
-            this.MainViewSwitcher.SuspendLayout();
-            this.AuthenticationPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -72,52 +72,44 @@
             this.aboutThisProgramToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.aboutThisProgramToolStripMenuItem.Text = "About this program";
             // 
-            // MainViewSwitcher
+            // label1
             // 
-            this.MainViewSwitcher.Alignment = System.Windows.Forms.TabAlignment.Bottom;
-            this.MainViewSwitcher.Controls.Add(this.AuthenticationPage);
-            this.MainViewSwitcher.Controls.Add(this.tabPage2);
-            this.MainViewSwitcher.Location = new System.Drawing.Point(0, 24);
-            this.MainViewSwitcher.Margin = new System.Windows.Forms.Padding(0);
-            this.MainViewSwitcher.Name = "MainViewSwitcher";
-            this.MainViewSwitcher.Padding = new System.Drawing.Point(0, 0);
-            this.MainViewSwitcher.SelectedIndex = 0;
-            this.MainViewSwitcher.Size = new System.Drawing.Size(800, 425);
-            this.MainViewSwitcher.TabIndex = 1;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Raleway", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(114, 44);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(140, 31);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "The Order";
             // 
-            // AuthenticationPage
+            // imageList1
             // 
-            this.AuthenticationPage.BackgroundImage = global::DesktopClient.Properties.Resources.bg_brown_texture_repeat;
-            this.AuthenticationPage.Controls.Add(this.linkLabel1);
-            this.AuthenticationPage.Location = new System.Drawing.Point(4, 4);
-            this.AuthenticationPage.Name = "AuthenticationPage";
-            this.AuthenticationPage.Padding = new System.Windows.Forms.Padding(3);
-            this.AuthenticationPage.Size = new System.Drawing.Size(792, 399);
-            this.AuthenticationPage.TabIndex = 0;
-            this.AuthenticationPage.Text = "AuthenticationPage";
-            this.AuthenticationPage.UseVisualStyleBackColor = true;
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // tabPage2
+            // pictureBox1
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 4);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(792, 399);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = global::DesktopClient.Properties.Resources.app_icon_192;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 27);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(96, 96);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
             // 
-            // linkLabel1
+            // label2
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(92, 68);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(696, 13);
-            this.linkLabel1.TabIndex = 0;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Welcome! To authenticate with the web server, please go to https://theorder.gg/in" +
-    "ner-circle/guild-bank/clients and copy the Client ID and Secret.";
-            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Raleway", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(115, 75);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(154, 25);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Desktop Client";
             // 
             // Main
             // 
@@ -126,16 +118,16 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(26)))), ((int)(((byte)(19)))));
             this.BackgroundImage = global::DesktopClient.Properties.Resources.bg_brown_texture_repeat;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.MainViewSwitcher);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.Text = "The Order";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.MainViewSwitcher.ResumeLayout(false);
-            this.AuthenticationPage.ResumeLayout(false);
-            this.AuthenticationPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -147,10 +139,10 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutThisProgramToolStripMenuItem;
-        private System.Windows.Forms.TabControl MainViewSwitcher;
-        private System.Windows.Forms.TabPage AuthenticationPage;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label2;
     }
 }
 

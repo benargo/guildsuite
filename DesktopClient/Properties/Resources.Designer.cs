@@ -63,10 +63,30 @@ namespace DesktopClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap app_icon_192 {
+            get {
+                object obj = ResourceManager.GetObject("app_icon_192", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bg_brown_texture_repeat {
             get {
                 object obj = ResourceManager.GetObject("bg_brown_texture_repeat", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Raleway_Regular {
+            get {
+                object obj = ResourceManager.GetObject("Raleway_Regular", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }
