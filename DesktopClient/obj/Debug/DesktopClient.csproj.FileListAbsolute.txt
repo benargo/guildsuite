@@ -1,0 +1,9 @@
+D:\Users\b-argo\Projects\GuildSuite\DesktopClient\bin\Debug\DesktopClient.exe.config
+D:\Users\b-argo\Projects\GuildSuite\DesktopClient\bin\Debug\DesktopClient.exe
+D:\Users\b-argo\Projects\GuildSuite\DesktopClient\bin\Debug\DesktopClient.pdb
+D:\Users\b-argo\Projects\GuildSuite\DesktopClient\obj\Debug\DesktopClient.csprojAssemblyReference.cache
+D:\Users\b-argo\Projects\GuildSuite\DesktopClient\obj\Debug\DesktopClient.Main.resources
+D:\Users\b-argo\Projects\GuildSuite\DesktopClient\obj\Debug\DesktopClient.Properties.Resources.resources
+D:\Users\b-argo\Projects\GuildSuite\DesktopClient\obj\Debug\DesktopClient.csproj.GenerateResource.cache
+D:\Users\b-argo\Projects\GuildSuite\DesktopClient\obj\Debug\DesktopClient.exe
+D:\Users\b-argo\Projects\GuildSuite\DesktopClient\obj\Debug\DesktopClient.pdb
