@@ -40,8 +40,10 @@ namespace DesktopClient
             );
 
             // Obtain an Authorization Token...
-            _ = OAuthClient.GetOAuthTokenAsync(this);
+            OAuthClient.GetOAuthTokenAsync(this);
         }
+
+
 
         private void LoadRalewayFont()
         {
@@ -67,17 +69,18 @@ namespace DesktopClient
             label2.Font = RalewayFont;
             label3.Font = RalewayFont;
             label4.Font = RalewayFont;
+            labelIsAuthenticated.Font = RalewayFont;
             linkLabel1.Font = RalewayFont;
         }
 
         private void textBoxClientId_TextChanged(object sender, EventArgs e)
         {
             var newClientId = int.Parse(textBoxClientId.Text);
-
-            try {
+            try
+            {
                 Properties.Settings.Default.clientId = newClientId;
             }
-            catch (FormatException exception)
+            catch (FormatException)
             {
                 textBoxClientId.Text = null;
             }
@@ -106,7 +109,22 @@ namespace DesktopClient
             Properties.Settings.Default.Save();
 
             // Reauthenticate using the new settings...
-            _ = OAuthClient.GetOAuthTokenAsync(this);
+            OAuthClient.GetOAuthTokenAsync(this);
+        }
+
+        public void labelIsAuthenticated_Update(bool isLoggedIn)
+        {
+            // Set the logged in label...
+            if (isLoggedIn)
+            {
+                labelIsAuthenticated.Text = "Logged in";
+                labelIsAuthenticated.ForeColor = System.Drawing.Color.FromArgb(40, 167, 69);
+            }
+            else
+            {
+                labelIsAuthenticated.Text = "Not logged in";
+                labelIsAuthenticated.ForeColor = System.Drawing.Color.FromArgb(220, 53, 69);
+            }
         }
     }
 }
