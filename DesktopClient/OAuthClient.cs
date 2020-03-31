@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DesktopClient
 {
-    class OAuthClient
+    public class OAuthClient
     {
         public Main MainInstance;
 

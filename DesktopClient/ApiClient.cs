@@ -10,24 +10,20 @@ using Newtonsoft.Json.Linq;
 
 namespace DesktopClient
 {
-    class ApiClient
+    public class ApiClient
     {
-        private readonly Main MainInstance;
         private readonly OAuthClient OAuthClient;
         private readonly string AuthorizationHeader;
 
-        public List<Banker> Bankers;
-
         const string BankersApiUrl = "https://theorder.gg/api/guild-bank/bankers";
 
-        public ApiClient(Main main, OAuthClient client)
+        public ApiClient(OAuthClient client)
         {
-            MainInstance = main;
             OAuthClient = client;
             AuthorizationHeader = $"Bearer {OAuthClient.Token}";
         }
 
-        public async void GetBankersAsync()
+        public async Task<List<Banker>> GetBankersAsync()
         {
             // Set up the HTTP request...
             HttpWebRequest bankersRequest = (HttpWebRequest)WebRequest.Create(BankersApiUrl);
@@ -50,16 +46,17 @@ namespace DesktopClient
                     // Convert the response to a dictionary...
                     JObject responseObject = JObject.Parse(responseText);
                     JArray bankersArray = (JArray)responseObject["bankers"];
-                    Bankers = bankersArray.ToObject<List<Banker>>();
-                }
+                    List<Banker> bankers = bankersArray.ToObject<List<Banker>>();
 
-                // Update the list of bankers in the main instance...
-                MainInstance.labelBankersList_Update(Bankers);
+                    return bankers;
+                }
             }
             catch (Exception e)
             {
                 Console.Write(e.Message);
             }
+
+            return null;
         }
     }
 }

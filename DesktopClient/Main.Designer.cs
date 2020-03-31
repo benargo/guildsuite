@@ -176,12 +176,14 @@
             // 
             this.buttonAuthenticationSettingsSave.AutoSize = true;
             this.buttonAuthenticationSettingsSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(183)))), ((int)(((byte)(0)))));
+            this.buttonAuthenticationSettingsSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonAuthenticationSettingsSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAuthenticationSettingsSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonAuthenticationSettingsSave.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
             this.buttonAuthenticationSettingsSave.Location = new System.Drawing.Point(6, 287);
             this.buttonAuthenticationSettingsSave.Name = "buttonAuthenticationSettingsSave";
             this.buttonAuthenticationSettingsSave.Padding = new System.Windows.Forms.Padding(5);
-            this.buttonAuthenticationSettingsSave.Size = new System.Drawing.Size(244, 38);
+            this.buttonAuthenticationSettingsSave.Size = new System.Drawing.Size(244, 40);
             this.buttonAuthenticationSettingsSave.TabIndex = 6;
             this.buttonAuthenticationSettingsSave.Text = "Save Changes";
             this.buttonAuthenticationSettingsSave.UseVisualStyleBackColor = false;
@@ -328,9 +330,11 @@
             // buttonBrowseToClassicFolder
             // 
             this.buttonBrowseToClassicFolder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(183)))), ((int)(((byte)(0)))));
+            this.buttonBrowseToClassicFolder.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonBrowseToClassicFolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonBrowseToClassicFolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.buttonBrowseToClassicFolder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            this.buttonBrowseToClassicFolder.Location = new System.Drawing.Point(175, 63);
+            this.buttonBrowseToClassicFolder.Location = new System.Drawing.Point(175, 64);
             this.buttonBrowseToClassicFolder.Name = "buttonBrowseToClassicFolder";
             this.buttonBrowseToClassicFolder.Size = new System.Drawing.Size(75, 25);
             this.buttonBrowseToClassicFolder.TabIndex = 8;

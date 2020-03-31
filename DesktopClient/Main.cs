@@ -61,13 +61,16 @@ namespace DesktopClient
             }
 
             // Initailise the API client...
-            ApiClient = new ApiClient(this, OAuthClient);
+            ApiClient = new ApiClient(OAuthClient);
 
             // Load the list of bankers...
-            ApiClient.GetBankersAsync();
+            LoadBankersAsync();
 
             // Initialise the Guild Bank Addon class...
-            GuildBankAddon = new GuildBankAddon(Properties.Settings.Default.wowClassicDir);
+            GuildBankAddon = new GuildBankAddon(Properties.Settings.Default.wowClassicDir, ApiClient);
+
+            // Begin watching the saved variables...
+            GuildBankAddon.Watch();
         }
 
         private void LoadRalewayFont()
@@ -100,12 +103,6 @@ namespace DesktopClient
                 labelAddonIsInstalled.ForeColor = SuccessColor;
             }
 
-            // Update the list of bankers...
-            if (ApiClient.Bankers != null)
-            {
-                
-            }
-
             // Render fonts...
             buttonAuthenticationSettingsSave.Font = RalewayFont12;
             buttonBrowseToClassicFolder.Font = RalewayFont10;
@@ -122,6 +119,26 @@ namespace DesktopClient
             labelBankersList.Font = RalewayFont10;
             labelIsAuthenticated.Font = RalewayFont12;
             linkLabel1.Font = RalewayFont11;
+        }
+
+        public async void LoadBankersAsync()
+        {
+            List<Banker> bankers = await ApiClient.GetBankersAsync();
+
+            // Reset the text back to being empty...
+            labelBankersList.Text = "";
+
+            if (bankers.Count > 1)
+            {
+                bankers.ForEach(banker =>
+                {
+                    labelBankersList.Text += $"•  {banker.name}\r\n";
+                });
+            }
+            else
+            {
+                labelBankersList.Text = "(none)";
+            }
         }
 
         private void textBoxClientId_TextChanged(object sender, EventArgs e)
@@ -175,24 +192,6 @@ namespace DesktopClient
             {
                 labelIsAuthenticated.Text = "Not logged in";
                 labelIsAuthenticated.ForeColor = ErrorColor;
-            }
-        }
-
-        public void labelBankersList_Update(List<Banker> bankers)
-        {
-            // Reset the text back to being empty...
-            labelBankersList.Text = "";
-
-            if (bankers.Count > 1)
-            {
-                bankers.ForEach(banker =>
-                {
-                    labelBankersList.Text += $"•  {banker.name}\r\n";
-                });
-            }
-            else
-            {
-                labelBankersList.Text = "(none)";
             }
         }
 
