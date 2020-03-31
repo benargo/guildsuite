@@ -97,6 +97,7 @@ function GuildBank:CheckMail()
                     CurrentItem.count = ItemCount
                     CurrentItem.mail  = MailboxIndex
                     CurrentItem.slot  = ItemIndex
+                    CurrentItem.owner = UnitName("player")
 
                     -- Insert Item model into table of items...
                     MyStock:AddMailItem(MailboxIndex, ItemIndex, CurrentItem)
