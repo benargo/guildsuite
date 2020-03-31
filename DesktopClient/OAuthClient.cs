@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,24 +11,28 @@ namespace DesktopClient
 {
     class OAuthClient
     {
+        public Main MainInstance;
+
         public int clientId;
         public string clientSecret;
         public string redirectUrl;
 
-        public string error;
-        public string token;
+        public string Code;
+        public string Error;
+        public string Token = Properties.Settings.Default.accessToken;
 
         const string authorizationEndpoint = "https://theorder.gg/oauth/authorize";
-        const string tokenEndpoint = "https://theorder.gg/oauth/token";
+        const string tokenEndpoint = "https://theorder.gg/oauth/token";        
 
-        public OAuthClient(int inputClientId, string inputClientSecret, string inputRedirectUrl = "http://localhost:9000/")
+        public OAuthClient(Main inputMainInstance, int inputClientId, string inputClientSecret, string inputRedirectUrl = "http://localhost:9000/")
         {
+            MainInstance = inputMainInstance;
             clientId = inputClientId;
             clientSecret = inputClientSecret;
             redirectUrl = inputRedirectUrl;
         }
 
-        public async void GetOAuthTokenAsync(Main mainInstance)
+        public async void AuthenticateAsync()
         {
             // Set up the HTTP listener...
             HttpListener httpListener = new HttpListener();
@@ -51,7 +54,7 @@ namespace DesktopClient
             var httpResponse = await httpListener.GetContextAsync();
 
             // Bring this app back to the foreground...
-            mainInstance.Activate();
+            MainInstance.Activate();
 
             // Send an HTTP response to the browser...
             string responseString = string.Format("<html><head><title>Authentication</title></head><body><p>Please return to the app. You may now close this tab/window.</p></body></html>");
@@ -67,20 +70,26 @@ namespace DesktopClient
             // Check for errors...
             if (httpResponse.Request.QueryString.Get("error") != null)
             {
-                error = String.Format("OAuth error: {0}.", httpResponse.Request.QueryString.Get("error"));
-                mainInstance.labelIsAuthenticated_Update(false);
+                Error = String.Format("OAuth error: {0}.", httpResponse.Request.QueryString.Get("error"));
+                MainInstance.labelIsAuthenticated_Update(false);
                 return;
             }
             if (httpResponse.Request.QueryString.Get("code") == null)
             {
-                error = "Malformed response received.";
-                mainInstance.labelIsAuthenticated_Update(false);
+                Error = "Malformed response received.";
+                MainInstance.labelIsAuthenticated_Update(false);
                 return;
             }
 
             // Extract the authentication code...
-            var code = httpResponse.Request.QueryString.Get("code");
+            Code = httpResponse.Request.QueryString.Get("code");
 
+            // Attempt to get an Access Token...
+            GetAccessTokenAsync(Code);
+        }
+
+        public async void GetAccessTokenAsync(string authenticationCode)
+        {
             // Exchange the authentication code for an authorization token...
             string formDataBoundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
 
@@ -114,7 +123,7 @@ namespace DesktopClient
             formDataStream.Write(formDataRedirectUri, 0, formDataRedirectUri.Length);
 
             // Code...
-            byte[] formDataCode = Encoding.UTF8.GetBytes(string.Format(formDataTemplate, "code", code));
+            byte[] formDataCode = Encoding.UTF8.GetBytes(string.Format(formDataTemplate, "code", authenticationCode));
             formDataStream.Write(formDataCode, 0, formDataCode.Length);
 
             // Set the request length...
@@ -147,11 +156,15 @@ namespace DesktopClient
                     // Convert the response body to a dictionary...
                     Dictionary<string, string> tokenEndpointDecoded = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseBody);
 
-                    // Catch the token
-                    token = tokenEndpointDecoded["access_token"];
+                    // Catch the token...
+                    Token = tokenEndpointDecoded["access_token"];
+
+                    // Save the token to the settings...
+                    Properties.Settings.Default.accessToken = Token;
+                    Properties.Settings.Default.Save();
 
                     // Set the logged in label...
-                    mainInstance.labelIsAuthenticated_Update(true);
+                    MainInstance.labelIsAuthenticated_Update(true);
                 }   
             }
             catch (WebException e)
@@ -161,7 +174,7 @@ namespace DesktopClient
                     var errorResponse = e.Response as HttpWebResponse;
                     using (StreamReader errorResponseReader = new StreamReader(errorResponse.GetResponseStream()))
                     {
-                        error = String.Format(
+                        Error = String.Format(
                             "HTTP {0}: {1} ", 
                             errorResponse.StatusCode,
                             await errorResponseReader.ReadToEndAsync()
@@ -169,7 +182,7 @@ namespace DesktopClient
                     } 
                 }
 
-                mainInstance.labelIsAuthenticated_Update(false);
+                MainInstance.labelIsAuthenticated_Update(false);
             }
         }
 

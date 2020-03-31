@@ -2,6 +2,9 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DesktopClient.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
+    <Setting Name="accessToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="clientId" Type="System.Int32" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -10,6 +13,9 @@
     </Setting>
     <Setting Name="redirectUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://localhost:9000/</Value>
+    </Setting>
+    <Setting Name="wowClassicDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiClient.cs" />
+    <Compile Include="Banker.cs" />
+    <Compile Include="GuildBankAddon.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>

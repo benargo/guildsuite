@@ -17,15 +17,25 @@ namespace DesktopClient
 {
     public partial class Main : Form
     {
+        // Required for font rendering. Do not touch!
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont,
             IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
 
+        // Fonts and colors
         private PrivateFontCollection PrivateFonts = new PrivateFontCollection();
+        private Font RalewayFont10;
+        private Font RalewayFont11;
+        private Font RalewayFont12;
+        private Font RalewayFont16;
+        private Font RalewayFont20;
+        private readonly Color SuccessColor = System.Drawing.Color.FromArgb(40, 167, 69);
+        private readonly Color ErrorColor = System.Drawing.Color.FromArgb(220, 53, 69);
 
-        private Font RalewayFont;
-
+        // Required instances...
+        private readonly ApiClient ApiClient;
         private readonly OAuthClient OAuthClient;
+        private readonly GuildBankAddon GuildBankAddon;
 
         public Main()
         {
@@ -34,16 +44,31 @@ namespace DesktopClient
 
             // Initialise the OAuth client...
             OAuthClient = new OAuthClient(
+                this,
                 Properties.Settings.Default.clientId,
                 Properties.Settings.Default.clientSecret,
                 Properties.Settings.Default.redirectUrl
             );
 
-            // Obtain an Authorization Token...
-            OAuthClient.GetOAuthTokenAsync(this);
+            if (String.IsNullOrEmpty(OAuthClient.Token))
+            {
+                // Authenticate if required...
+                OAuthClient.AuthenticateAsync();
+            }
+            else
+            {
+                labelIsAuthenticated_Update(true);
+            }
+
+            // Initailise the API client...
+            ApiClient = new ApiClient(this, OAuthClient);
+
+            // Load the list of bankers...
+            ApiClient.GetBankersAsync();
+
+            // Initialise the Guild Bank Addon class...
+            GuildBankAddon = new GuildBankAddon(Properties.Settings.Default.wowClassicDir);
         }
-
-
 
         private void LoadRalewayFont()
         {
@@ -53,7 +78,11 @@ namespace DesktopClient
             Marshal.Copy(FontResource, 0, data, (int)FontResource.Length);
             PrivateFonts.AddMemoryFont(data, (int)FontResource.Length);
             Marshal.FreeCoTaskMem(data);
-            RalewayFont = new Font(PrivateFonts.Families[0], 22);
+            RalewayFont10 = new Font(PrivateFonts.Families[0], 10);
+            RalewayFont11 = new Font(PrivateFonts.Families[0], 11);
+            RalewayFont12 = new Font(PrivateFonts.Families[0], 12);
+            RalewayFont16 = new Font(PrivateFonts.Families[0], 16);
+            RalewayFont20 = new Font(PrivateFonts.Families[0], 20);
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -62,15 +91,37 @@ namespace DesktopClient
             textBoxClientId.Text = Properties.Settings.Default.clientId.ToString();
             textBoxClientSecret.Text = Properties.Settings.Default.clientSecret;
             textBoxRedirectUrl.Text = Properties.Settings.Default.redirectUrl;
+            textBoxClassicDir.Text = Properties.Settings.Default.wowClassicDir;
+
+            // Check if the addon is installed...
+            if (GuildBankAddon.Version != "none")
+            {
+                labelAddonIsInstalled.Text = $"Version installed: {GuildBankAddon.Version}";
+                labelAddonIsInstalled.ForeColor = SuccessColor;
+            }
+
+            // Update the list of bankers...
+            if (ApiClient.Bankers != null)
+            {
+                
+            }
 
             // Render fonts...
-            buttonAuthenticationSettingsSave.Font = RalewayFont;
-            label1.Font = RalewayFont;
-            label2.Font = RalewayFont;
-            label3.Font = RalewayFont;
-            label4.Font = RalewayFont;
-            labelIsAuthenticated.Font = RalewayFont;
-            linkLabel1.Font = RalewayFont;
+            buttonAuthenticationSettingsSave.Font = RalewayFont12;
+            buttonBrowseToClassicFolder.Font = RalewayFont10;
+            label1.Font = RalewayFont20;
+            label2.Font = RalewayFont16;
+            label3.Font = RalewayFont11;
+            label4.Font = RalewayFont11;
+            label5.Font = RalewayFont11;
+            label6.Font = RalewayFont11;
+            label7.Font = RalewayFont10;
+            label8.Font = RalewayFont11;
+            label9.Font = RalewayFont11;
+            labelAddonIsInstalled.Font = RalewayFont10;
+            labelBankersList.Font = RalewayFont10;
+            labelIsAuthenticated.Font = RalewayFont12;
+            linkLabel1.Font = RalewayFont11;
         }
 
         private void textBoxClientId_TextChanged(object sender, EventArgs e)
@@ -109,7 +160,7 @@ namespace DesktopClient
             Properties.Settings.Default.Save();
 
             // Reauthenticate using the new settings...
-            OAuthClient.GetOAuthTokenAsync(this);
+            OAuthClient.AuthenticateAsync();
         }
 
         public void labelIsAuthenticated_Update(bool isLoggedIn)
@@ -118,12 +169,64 @@ namespace DesktopClient
             if (isLoggedIn)
             {
                 labelIsAuthenticated.Text = "Logged in";
-                labelIsAuthenticated.ForeColor = System.Drawing.Color.FromArgb(40, 167, 69);
+                labelIsAuthenticated.ForeColor = SuccessColor;
             }
             else
             {
                 labelIsAuthenticated.Text = "Not logged in";
-                labelIsAuthenticated.ForeColor = System.Drawing.Color.FromArgb(220, 53, 69);
+                labelIsAuthenticated.ForeColor = ErrorColor;
+            }
+        }
+
+        public void labelBankersList_Update(List<Banker> bankers)
+        {
+            // Reset the text back to being empty...
+            labelBankersList.Text = "";
+
+            if (bankers.Count > 1)
+            {
+                bankers.ForEach(banker =>
+                {
+                    labelBankersList.Text += $"•  {banker.name}\r\n";
+                });
+            }
+            else
+            {
+                labelBankersList.Text = "(none)";
+            }
+        }
+
+        private void Main_Resize(object sender, EventArgs e)
+        {
+            // If the form is minimized hide it from the task bar
+            // and show the system tray icon (represented by the NotifyIcon control)...
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                notifyIcon.Visible = true;
+            }
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            notifyIcon.Visible = false;
+        }
+
+        private void buttonBrowseToClassicFolder_Click(object sender, EventArgs e)
+        {
+            // Show the dialog that allows user to select a folder...
+            DialogResult result = folderBrowserDialogWoWDirectory.ShowDialog();
+
+            // If a folder is selected...
+            if (result == DialogResult.OK)
+            {
+                string path = folderBrowserDialogWoWDirectory.SelectedPath.TrimEnd(new[] { '/', '\\' });
+
+                textBoxClassicDir.Text = path;
+                Properties.Settings.Default.wowClassicDir = path;
+                Properties.Settings.Default.Save();
             }
         }
     }
