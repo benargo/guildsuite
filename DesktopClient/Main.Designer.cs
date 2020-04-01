@@ -30,82 +30,49 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutThisProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxClientId = new System.Windows.Forms.TextBox();
             this.groupBoxAuthenticationSettings = new System.Windows.Forms.GroupBox();
-            this.buttonAuthenticationSettingsSave = new System.Windows.Forms.Button();
             this.textBoxRedirectUrl = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxClientSecret = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.buttonAuthenticationSettingsSave = new System.Windows.Forms.Button();
             this.groupBoxAuthenticationStatus = new System.Windows.Forms.GroupBox();
             this.labelIsAuthenticated = new System.Windows.Forms.Label();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBoxWoWConfiguration = new System.Windows.Forms.GroupBox();
-            this.labelAddonIsInstalled = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.buttonBrowseToClassicFolder = new System.Windows.Forms.Button();
             this.textBoxClassicDir = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.labelAddonIsInstalled = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.folderBrowserDialogWoWDirectory = new System.Windows.Forms.FolderBrowserDialog();
             this.label9 = new System.Windows.Forms.Label();
             this.labelBankersList = new System.Windows.Forms.Label();
             this.groupBoxGuildBank = new System.Windows.Forms.GroupBox();
-            this.menuStrip1.SuspendLayout();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxLog = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBoxAuthenticationSettings.SuspendLayout();
             this.groupBoxAuthenticationStatus.SuspendLayout();
             this.groupBoxWoWConfiguration.SuspendLayout();
             this.groupBoxGuildBank.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.fileToolStripMenuItem.Text = "Settings";
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutThisProgramToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // aboutThisProgramToolStripMenuItem
-            // 
-            this.aboutThisProgramToolStripMenuItem.Name = "aboutThisProgramToolStripMenuItem";
-            this.aboutThisProgramToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.aboutThisProgramToolStripMenuItem.Text = "About this program";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(114, 44);
+            this.label1.Location = new System.Drawing.Point(114, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(137, 31);
             this.label1.TabIndex = 1;
@@ -121,7 +88,7 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = global::DesktopClient.Properties.Resources.app_icon_192;
-            this.pictureBox1.Location = new System.Drawing.Point(13, 27);
+            this.pictureBox1.Location = new System.Drawing.Point(13, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(96, 96);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -133,7 +100,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(115, 75);
+            this.label2.Location = new System.Drawing.Point(115, 60);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(152, 25);
             this.label2.TabIndex = 3;
@@ -155,8 +122,8 @@
             // groupBoxAuthenticationSettings
             // 
             this.groupBoxAuthenticationSettings.BackColor = System.Drawing.Color.Transparent;
-            this.groupBoxAuthenticationSettings.Controls.Add(this.buttonAuthenticationSettingsSave);
             this.groupBoxAuthenticationSettings.Controls.Add(this.textBoxRedirectUrl);
+            this.groupBoxAuthenticationSettings.Controls.Add(this.buttonAuthenticationSettingsSave);
             this.groupBoxAuthenticationSettings.Controls.Add(this.label5);
             this.groupBoxAuthenticationSettings.Controls.Add(this.textBoxClientSecret);
             this.groupBoxAuthenticationSettings.Controls.Add(this.label4);
@@ -171,23 +138,6 @@
             this.groupBoxAuthenticationSettings.TabIndex = 6;
             this.groupBoxAuthenticationSettings.TabStop = false;
             this.groupBoxAuthenticationSettings.Text = "Authentication Settings";
-            // 
-            // buttonAuthenticationSettingsSave
-            // 
-            this.buttonAuthenticationSettingsSave.AutoSize = true;
-            this.buttonAuthenticationSettingsSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(183)))), ((int)(((byte)(0)))));
-            this.buttonAuthenticationSettingsSave.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonAuthenticationSettingsSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonAuthenticationSettingsSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAuthenticationSettingsSave.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            this.buttonAuthenticationSettingsSave.Location = new System.Drawing.Point(6, 287);
-            this.buttonAuthenticationSettingsSave.Name = "buttonAuthenticationSettingsSave";
-            this.buttonAuthenticationSettingsSave.Padding = new System.Windows.Forms.Padding(5);
-            this.buttonAuthenticationSettingsSave.Size = new System.Drawing.Size(244, 40);
-            this.buttonAuthenticationSettingsSave.TabIndex = 6;
-            this.buttonAuthenticationSettingsSave.Text = "Save Changes";
-            this.buttonAuthenticationSettingsSave.UseVisualStyleBackColor = false;
-            this.buttonAuthenticationSettingsSave.Click += new System.EventHandler(this.buttonAuthenticationSettingsSave_Click);
             // 
             // textBoxRedirectUrl
             // 
@@ -258,6 +208,23 @@
             this.linkLabel1.Text = "You can obtain your Client ID and Secret from The Order\'s website.";
             this.linkLabel1.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(155)))), ((int)(((byte)(0)))));
             // 
+            // buttonAuthenticationSettingsSave
+            // 
+            this.buttonAuthenticationSettingsSave.AutoSize = true;
+            this.buttonAuthenticationSettingsSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(183)))), ((int)(((byte)(0)))));
+            this.buttonAuthenticationSettingsSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonAuthenticationSettingsSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAuthenticationSettingsSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAuthenticationSettingsSave.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.buttonAuthenticationSettingsSave.Location = new System.Drawing.Point(6, 285);
+            this.buttonAuthenticationSettingsSave.Name = "buttonAuthenticationSettingsSave";
+            this.buttonAuthenticationSettingsSave.Padding = new System.Windows.Forms.Padding(5);
+            this.buttonAuthenticationSettingsSave.Size = new System.Drawing.Size(244, 40);
+            this.buttonAuthenticationSettingsSave.TabIndex = 6;
+            this.buttonAuthenticationSettingsSave.Text = "Login";
+            this.buttonAuthenticationSettingsSave.UseVisualStyleBackColor = false;
+            this.buttonAuthenticationSettingsSave.Click += new System.EventHandler(this.buttonAuthenticationSettingsSave_Click);
+            // 
             // groupBoxAuthenticationStatus
             // 
             this.groupBoxAuthenticationStatus.BackColor = System.Drawing.Color.Transparent;
@@ -305,27 +272,6 @@
             this.groupBoxWoWConfiguration.TabIndex = 8;
             this.groupBoxWoWConfiguration.TabStop = false;
             this.groupBoxWoWConfiguration.Text = "WoW Settings";
-            // 
-            // labelAddonIsInstalled
-            // 
-            this.labelAddonIsInstalled.AutoSize = true;
-            this.labelAddonIsInstalled.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelAddonIsInstalled.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
-            this.labelAddonIsInstalled.Location = new System.Drawing.Point(6, 44);
-            this.labelAddonIsInstalled.Name = "labelAddonIsInstalled";
-            this.labelAddonIsInstalled.Size = new System.Drawing.Size(143, 16);
-            this.labelAddonIsInstalled.TabIndex = 10;
-            this.labelAddonIsInstalled.Text = "Version installed: none";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(6, 26);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(96, 18);
-            this.label8.TabIndex = 9;
-            this.label8.Text = "Addon Status";
             // 
             // buttonBrowseToClassicFolder
             // 
@@ -375,6 +321,27 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "WoW Classic Directory";
             // 
+            // labelAddonIsInstalled
+            // 
+            this.labelAddonIsInstalled.AutoSize = true;
+            this.labelAddonIsInstalled.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAddonIsInstalled.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.labelAddonIsInstalled.Location = new System.Drawing.Point(6, 44);
+            this.labelAddonIsInstalled.Name = "labelAddonIsInstalled";
+            this.labelAddonIsInstalled.Size = new System.Drawing.Size(143, 16);
+            this.labelAddonIsInstalled.TabIndex = 10;
+            this.labelAddonIsInstalled.Text = "Version installed: none";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(6, 26);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(96, 18);
+            this.label8.TabIndex = 9;
+            this.label8.Text = "Addon Status";
+            // 
             // folderBrowserDialogWoWDirectory
             // 
             this.folderBrowserDialogWoWDirectory.Description = "Select your WoW Classic directory. This should end in `_classic_`.";
@@ -416,13 +383,39 @@
             this.groupBoxGuildBank.TabStop = false;
             this.groupBoxGuildBank.Text = "Guild Bank Settings";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.textBoxLog);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
+            this.groupBox1.Location = new System.Drawing.Point(539, 130);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(256, 392);
+            this.groupBox1.TabIndex = 10;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Log";
+            // 
+            // textBoxLog
+            // 
+            this.textBoxLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(26)))), ((int)(((byte)(19)))));
+            this.textBoxLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxLog.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxLog.Location = new System.Drawing.Point(7, 26);
+            this.textBoxLog.Multiline = true;
+            this.textBoxLog.Name = "textBoxLog";
+            this.textBoxLog.ReadOnly = true;
+            this.textBoxLog.Size = new System.Drawing.Size(243, 360);
+            this.textBoxLog.TabIndex = 0;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(26)))), ((int)(((byte)(19)))));
             this.BackgroundImage = global::DesktopClient.Properties.Resources.bg_brown_texture_repeat;
-            this.ClientSize = new System.Drawing.Size(800, 534);
+            this.ClientSize = new System.Drawing.Size(810, 534);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxGuildBank);
             this.Controls.Add(this.groupBoxWoWConfiguration);
             this.Controls.Add(this.groupBoxAuthenticationStatus);
@@ -430,15 +423,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.Text = "Guild Suite";
             this.Load += new System.EventHandler(this.Main_Load);
             this.Resize += new System.EventHandler(this.Main_Resize);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBoxAuthenticationSettings.ResumeLayout(false);
             this.groupBoxAuthenticationSettings.PerformLayout();
@@ -448,17 +437,14 @@
             this.groupBoxWoWConfiguration.PerformLayout();
             this.groupBoxGuildBank.ResumeLayout(false);
             this.groupBoxGuildBank.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutThisProgramToolStripMenuItem;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.PictureBox pictureBox1;
@@ -486,6 +472,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label labelBankersList;
         private System.Windows.Forms.GroupBox groupBoxGuildBank;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox textBoxLog;
     }
 }
 
