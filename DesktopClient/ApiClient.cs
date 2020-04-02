@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using System.Web;
 
 namespace DesktopClient
 {
@@ -15,7 +16,8 @@ namespace DesktopClient
         private readonly OAuthClient OAuthClient;
         private readonly string AuthorizationHeader;
 
-        const string BankersApiUrl = "https://theorder.gg/api/guild-bank/bankers";
+        public const string BankersApiUrl = "https://theorder.gg/api/guild-bank/bankers";
+        public const string ApiUrl = "";
 
         public ApiClient(OAuthClient client)
         {
@@ -23,32 +25,79 @@ namespace DesktopClient
             AuthorizationHeader = $"Bearer {OAuthClient.Token}";
         }
 
-        public async Task<List<Banker>> GetBankersAsync()
+        public async Task<JObject> Get(string url)
         {
             // Set up the HTTP request...
-            HttpWebRequest bankersRequest = (HttpWebRequest)WebRequest.Create(BankersApiUrl);
-            bankersRequest.Accept = "application/json";
-            bankersRequest.Method = "GET";
-            bankersRequest.Headers.Add("Authorization", AuthorizationHeader);            
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Accept = "application/json";
+            request.Method = "GET";
+            request.Headers.Add("Authorization", AuthorizationHeader);
 
             // Attempt the request...
             try
             {
                 // Send the request and wait for the response to come back...
-                WebResponse context = await bankersRequest.GetResponseAsync();
+                WebResponse response = await request.GetResponseAsync();
 
                 // Put on our reading glasses and read the API's response...
-                using (StreamReader reader = new StreamReader(context.GetResponseStream()))
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
                     // Read the response body...
                     string responseText = await reader.ReadToEndAsync();
 
-                    // Convert the response to a dictionary...
-                    JObject responseObject = JObject.Parse(responseText);
-                    JArray bankersArray = (JArray)responseObject["bankers"];
-                    List<Banker> bankers = bankersArray.ToObject<List<Banker>>();
+                    // Parse the response as JSON...
+                    return JObject.Parse(responseText);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+            }
 
-                    return bankers;
+            return null;
+        }
+
+        public async Task<JObject> Post(string url, Dictionary<string, string> formData)
+        {
+            string postData = "";
+
+            foreach (string key in formData.Keys)
+            {
+                postData += HttpUtility.UrlEncode(key)
+                          + "="
+                          + HttpUtility.UrlEncode(formData[key])
+                          + "&";
+            }
+
+            // Build the request object...
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Accept = "application/json";
+            request.Method = "POST";
+            request.Headers.Add("Authorization", AuthorizationHeader);
+
+            byte[] data = Encoding.ASCII.GetBytes(postData);
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            // Build the post data...
+            Stream requestStream = request.GetRequestStream();
+            requestStream.Write(data, 0, data.Length);
+            requestStream.Close();
+
+            // Attempt the request...
+            try
+            {
+                // Send the request and wait for the response to come back...
+                WebResponse response = await request.GetResponseAsync();
+
+                // Put on our reading glasses and read the API's response...
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    // Read the response body...
+                    string responseText = await reader.ReadToEndAsync();
+
+                    // Parse the response as JSON...
+                    return JObject.Parse(responseText);
                 }
             }
             catch (Exception e)

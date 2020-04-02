@@ -114,6 +114,12 @@ namespace DesktopClient
 					stock.Bags.Add(itemObject);
 				}
 			}
+
+			// Organise the data and convert into JSON...
+			String stockAsJson = stock.ToJson();
+
+			// Prepare the API request...
+
 		}
 	}
 }

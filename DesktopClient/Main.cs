@@ -12,6 +12,7 @@ using System.Drawing.Text;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json.Linq;
 
 namespace DesktopClient
 {
@@ -123,7 +124,10 @@ namespace DesktopClient
 
         public async void LoadBankersAsync()
         {
-            List<Banker> bankers = await ApiClient.GetBankersAsync();
+            // Load the bankers from the API...
+            JObject response = await ApiClient.Get(ApiClient.BankersApiUrl);
+            JArray bankersArray = (JArray)response["bankers"];
+            List<Banker> bankers = bankersArray.ToObject<List<Banker>>();
 
             // Reset the text back to being empty...
             labelBankersList.Text = "";
