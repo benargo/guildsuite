@@ -74,7 +74,7 @@ InterfaceFrame = InterfaceOptions:CreateOptionsPanel()
 InterfaceFrame:RegisterEvent("ADDON_LOADED")
 
 InterfaceFrame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "OrderStock" then
+    if event == "ADDON_LOADED" and arg1 == "GuildBank" then
         local DefaultInterfaceOptions = {
             enableProfiling = false,
             enableDebugMode = false,
@@ -87,12 +87,12 @@ InterfaceFrame:SetScript("OnEvent", function(self, event, arg1)
             end
         end
 
-        Debug:printLine("Enable Profiling: " .. tostring(InterfaceOptions.enableProfiling))
-        InterfaceFrame.enableProfilingCheckbox:SetChecked(InterfaceOptions.enableProfiling)
-
+        DebugMode.enabled = InterfaceOptions.enableDebugMode
         Debug:printLine("Enable Debug Mode: " .. tostring(InterfaceOptions.enableDebugMode))
         InterfaceFrame.enableDebugModeCheckbox:SetChecked(InterfaceOptions.enableDebugMode)
-        DebugMode.enabled = InterfaceOptions.enableDebugMode
+
+        Debug:printLine("Enable Profiling: " .. tostring(InterfaceOptions.enableProfiling))
+        InterfaceFrame.enableProfilingCheckbox:SetChecked(InterfaceOptions.enableProfiling)
     end
 end)
 

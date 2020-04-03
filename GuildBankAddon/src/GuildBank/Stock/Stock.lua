@@ -51,14 +51,16 @@ function Stock:AddMailItem(MailNumber, SlotNumber, Item)
 end
 
 function Stock:RemoveBagItem(BagNumber, SlotNumber)
-    BagNumber = tostring(BagNumber)
-    SlotNumber = tostring(SlotNumber)
-
     -- Create the bag object if it doesn't exist...
-    self:CreateBagIfNotExist(BagNumber)
+    self:CreateBagIfNotExist(tostring(BagNumber))
 
-    if Stock.Bags[BagNumber][SlotNumber] then
-        Stock.Bags[BagNumber][SlotNumber] = {}
+    slot = Stock.Bags[tostring(BagNumber)][tostring(SlotNumber)];
+
+    if slot then
+        if slot['id'] then
+            Debug:printLine("Item marked as removed.")
+            Stock.Bags[tostring(BagNumber)][tostring(SlotNumber)] = Item:NewByBagSlot(BagNumber, SlotNumber)
+        end
     end
 end
 

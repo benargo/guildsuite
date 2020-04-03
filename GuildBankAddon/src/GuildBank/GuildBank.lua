@@ -10,7 +10,6 @@ GuildBank = CreateFrame("Frame")
 -- Class parameters...
 GuildBank.BankIsOpen = false
 GuildBank.MailIsOpen = false
-GuildBank.InventoryIsEmpty = true
 if not Stock then Stock = {} end
 
 -- Register the events...
@@ -139,22 +138,16 @@ function GuildBank:UpdateStock()
 
                 -- If the slot is occupied, get information about the item...
                 if (GetContainerItemLink(BagNumber, BagSlot)) then
-
-                    -- The inventory is definitely not empty...
-                    if self.InventoryIsEmpty == true then
-                        Debug:printLine('Marking the inventory as not empty')
-                        self.InventoryIsEmpty = false
-                    end
-
                     -- Fetch the current item...
                     local CurrentItem = Item:NewByBagSlot(BagNumber, BagSlot)
 
                     -- Insert Item model into table of items...
                     MyStock:AddBagItem(BagNumber, BagSlot, CurrentItem)
                     Debug:printLine("|cff00ff00Item inserted!|r")
+
                 -- Remove the current saved value from the bag...
                 else
-                    Debug:printLine("Stot is empty, removed item from the local database")
+                    Debug:printLine("Stot is empty.")
                     MyStock:RemoveBagItem(BagNumber, BagSlot)
                 end
             end
