@@ -17,7 +17,7 @@ namespace DesktopClient
         private readonly string AuthorizationHeader;
 
         public const string BankersApiUrl = "https://theorder.gg/api/guild-bank/bankers";
-        public const string ApiUrl = "";
+        public const string UpdateStockApiUrl = "https://theorder.gg/api/guild-bank/stock/update";
 
         public ApiClient(OAuthClient client)
         {

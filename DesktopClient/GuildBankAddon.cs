@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace DesktopClient
 {
@@ -36,7 +37,12 @@ namespace DesktopClient
 		{
 			if (Directory.Exists(WtfDirectory))
 			{
-				List<Banker> bankers = await ApiClient.GetBankersAsync();
+				// Load the list of bankers from the API...
+				JObject response = await ApiClient.Get(ApiClient.BankersApiUrl);
+				JArray bankersArray = (JArray)response["bankers"];
+				List<Banker> bankers = bankersArray.ToObject<List<Banker>>();
+
+				// Create an array of watchers to look for file changes...
 				List<FileSystemWatcher> watchers = new List<FileSystemWatcher>();
 
 				bankers.ForEach(banker =>
@@ -92,7 +98,7 @@ namespace DesktopClient
 					itemObject.owner = itemTable.Table.Get("owner").CastToString();
 					itemObject.name = itemTable.Table.Get("name").CastToString();
 					itemObject.link = itemTable.Table.Get("link").CastToString();
-					stock.Mail.Add(itemObject);
+					stock.mail.Add(itemObject);
 				}
 			}
 
@@ -111,15 +117,15 @@ namespace DesktopClient
 					itemObject.owner = itemTable.Table.Get("owner").CastToString();
 					itemObject.name  = itemTable.Table.Get("name").CastToString();
 					itemObject.link  = itemTable.Table.Get("link").CastToString();
-					stock.Bags.Add(itemObject);
+					stock.bags.Add(itemObject);
 				}
 			}
 
 			// Organise the data and convert into JSON...
-			String stockAsJson = stock.ToJson();
+			string stockAsJson = stock.ToJson();
 
 			// Prepare the API request...
-
+			stock.Post(ApiClient, stockAsJson);
 		}
 	}
 }
