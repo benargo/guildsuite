@@ -8,13 +8,19 @@ namespace DesktopClient.WoW
 {
     class Item
     {
+        // Item information...
         public int id;
-        public int bag;
-        public int count;
-        public int mail;
         public string name;
         public string link;
-        public string owner;
+        public int count;
+        
+        // Location information...
+        public int bag;
+        public int mail;
         public int slot;
+        
+        // Banker information...
+        public string banker_name;
+        
     }
 }

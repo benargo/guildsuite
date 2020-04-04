@@ -11,90 +11,85 @@ namespace DesktopClient
 {
     public class OAuthClient
     {
-        public Main MainInstance;
+        public Nullable<int> ClientId;
+        public string ClientSecret;
+        public string RedirectUrl;
 
-        public int clientId;
-        public string clientSecret;
-        public string redirectUrl;
-
-        public string Code;
         public string Error;
-        public string Token = Properties.Settings.Default.accessToken;
+        public string Token;
 
-        const string authorizationEndpoint = "https://theorder.gg/oauth/authorize";
-        const string tokenEndpoint = "https://theorder.gg/oauth/token";        
+        const string AuthorizationEndpoint = "https://theorder.gg/oauth/authorize";
+        const string TokenEndpoint = "https://theorder.gg/oauth/token";        
 
-        public OAuthClient(Main inputMainInstance, int inputClientId, string inputClientSecret, string inputRedirectUrl = "http://localhost:9000/")
+        public OAuthClient(int inputClientId, string inputClientSecret, string inputRedirectUrl = "http://localhost:9000/")
         {
-            MainInstance = inputMainInstance;
-            clientId = inputClientId;
-            clientSecret = inputClientSecret;
-            redirectUrl = inputRedirectUrl;
+            ClientId = inputClientId;
+            ClientSecret = inputClientSecret;
+            RedirectUrl = inputRedirectUrl;
         }
 
-        public async void AuthenticateAsync()
+        public async Task<string> AuthenticateAsync()
         {
-            // Set up the HTTP listener...
-            HttpListener httpListener = new HttpListener();
-            httpListener.Prefixes.Add(redirectUrl);
-            httpListener.Start();
-
-            // Create the OAuth 2.0 authorization request...
-            string authorizationRequest = string.Format("{0}?response_type=code&redirect_uri={1}&client_id={2}&scope=&state={3}",
-                authorizationEndpoint,
-                System.Uri.EscapeDataString(redirectUrl),
-                clientId,
-                GenerateStateValue(32) // Random state value...
-            );
-
-            // Open request in the browser...
-            System.Diagnostics.Process.Start(authorizationRequest);
-
-            // Wait for the OAuth authorization response...
-            var httpResponse = await httpListener.GetContextAsync();
-
-            // Bring this app back to the foreground...
-            MainInstance.Activate();
-
-            // Send an HTTP response to the browser...
-            string responseString = string.Format("<html><head><title>Authentication</title></head><body><p>Please return to the app. You may now close this tab/window.</p></body></html>");
-            var buffer1 = System.Text.Encoding.UTF8.GetBytes(responseString);
-            httpResponse.Response.ContentLength64 = buffer1.Length;
-            var responseOutput = httpResponse.Response.OutputStream;
-            Task responseTask = responseOutput.WriteAsync(buffer1, 0, buffer1.Length).ContinueWith((task) =>
+            if (ClientId.HasValue
+                && ClientSecret.Length > 0
+                && RedirectUrl.Length > 0)
             {
-                responseOutput.Close();
-                httpListener.Stop();
-            });
+                // Set up the HTTP listener...
+                HttpListener httpListener = new HttpListener();
+                httpListener.Prefixes.Add(RedirectUrl);
+                httpListener.Start();
 
-            // Check for errors...
-            if (httpResponse.Request.QueryString.Get("error") != null)
-            {
-                Error = String.Format("OAuth error: {0}.", httpResponse.Request.QueryString.Get("error"));
-                MainInstance.labelIsAuthenticated_Update(false);
-                return;
+                // Create the OAuth 2.0 authorization request...
+                string authorizationRequest = string.Format("{0}?response_type=code&redirect_uri={1}&client_id={2}&scope=&state={3}",
+                    AuthorizationEndpoint,
+                    System.Uri.EscapeDataString(RedirectUrl),
+                    ClientId,
+                    GenerateStateValue(32) // Random state value...
+                );
+
+                // Open request in the browser...
+                System.Diagnostics.Process.Start(authorizationRequest);
+
+                // Wait for the OAuth authorization response...
+                var httpResponse = await httpListener.GetContextAsync();
+
+                // Send an HTTP response to the browser...
+                string responseString = string.Format("<html><head><title>Authentication</title></head><body><p>Please return to the app. You may now close this tab/window.</p></body></html>");
+                var buffer1 = System.Text.Encoding.UTF8.GetBytes(responseString);
+                httpResponse.Response.ContentLength64 = buffer1.Length;
+                var responseOutput = httpResponse.Response.OutputStream;
+                Task responseTask = responseOutput.WriteAsync(buffer1, 0, buffer1.Length).ContinueWith((task) =>
+                {
+                    responseOutput.Close();
+                    httpListener.Stop();
+                });
+
+                // Check for errors...
+                if (httpResponse.Request.QueryString.Get("error") != null)
+                {
+                    Error = String.Format("OAuth error: {0}.", httpResponse.Request.QueryString.Get("error"));
+                    return null;
+                }
+                if (httpResponse.Request.QueryString.Get("code") == null)
+                {
+                    Error = "Malformed response received.";
+                    return null;
+                }
+
+                // Extract the authentication code...
+                return httpResponse.Request.QueryString.Get("code");
             }
-            if (httpResponse.Request.QueryString.Get("code") == null)
-            {
-                Error = "Malformed response received.";
-                MainInstance.labelIsAuthenticated_Update(false);
-                return;
-            }
 
-            // Extract the authentication code...
-            Code = httpResponse.Request.QueryString.Get("code");
-
-            // Attempt to get an Access Token...
-            GetAccessTokenAsync(Code);
+            return null;
         }
 
-        public async void GetAccessTokenAsync(string authenticationCode)
+        public async Task<string> GetAccessTokenAsync(string authenticationCode)
         {
             // Exchange the authentication code for an authorization token...
             string formDataBoundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
 
             // Prepare the HTTP request...
-            HttpWebRequest tokenRequest = (HttpWebRequest)WebRequest.Create(tokenEndpoint);
+            HttpWebRequest tokenRequest = (HttpWebRequest)WebRequest.Create(TokenEndpoint);
             tokenRequest.Method = "POST";
             tokenRequest.ContentType = "multipart/form-data; boundary=" + formDataBoundary;
             tokenRequest.Accept = "application/json";
@@ -111,15 +106,15 @@ namespace DesktopClient
             formDataStream.Write(formDataGrantType, 0, formDataGrantType.Length);
 
             // Client ID...
-            byte[] formDataClientId = Encoding.UTF8.GetBytes(string.Format(formDataTemplate, "client_id", clientId));
+            byte[] formDataClientId = Encoding.UTF8.GetBytes(string.Format(formDataTemplate, "client_id", ClientId));
             formDataStream.Write(formDataClientId, 0, formDataClientId.Length);
 
             // Client Secret...
-            byte[] formDataClientSecret = Encoding.UTF8.GetBytes(string.Format(formDataTemplate, "client_secret", clientSecret));
+            byte[] formDataClientSecret = Encoding.UTF8.GetBytes(string.Format(formDataTemplate, "client_secret", ClientSecret));
             formDataStream.Write(formDataClientSecret, 0, formDataClientSecret.Length);
 
             // Redirect URI...
-            byte[] formDataRedirectUri = Encoding.UTF8.GetBytes(string.Format(formDataTemplate, "redirect_uri", redirectUrl));
+            byte[] formDataRedirectUri = Encoding.UTF8.GetBytes(string.Format(formDataTemplate, "redirect_uri", RedirectUrl));
             formDataStream.Write(formDataRedirectUri, 0, formDataRedirectUri.Length);
 
             // Code...
@@ -162,10 +157,7 @@ namespace DesktopClient
                     // Save the token to the settings...
                     Properties.Settings.Default.accessToken = Token;
                     Properties.Settings.Default.Save();
-
-                    // Set the logged in label...
-                    MainInstance.labelIsAuthenticated_Update(true);
-                }   
+                }
             }
             catch (WebException e)
             {
@@ -174,16 +166,17 @@ namespace DesktopClient
                     var errorResponse = e.Response as HttpWebResponse;
                     using (StreamReader errorResponseReader = new StreamReader(errorResponse.GetResponseStream()))
                     {
-                        Error = String.Format(
+                        Error = string.Format(
                             "HTTP {0}: {1} ", 
                             errorResponse.StatusCode,
                             await errorResponseReader.ReadToEndAsync()
                         );
                     } 
                 }
-
-                MainInstance.labelIsAuthenticated_Update(false);
             }
+
+            // return the access token. If authentication failed this will be null...
+            return Token;
         }
 
         private static string GenerateStateValue(uint length)
@@ -206,6 +199,11 @@ namespace DesktopClient
             base64 = base64.Replace("=", "");
 
             return base64;
+        }
+
+        public bool IsAuthenticated()
+        {
+            return ! string.IsNullOrEmpty(Token);
         }
     }
 }

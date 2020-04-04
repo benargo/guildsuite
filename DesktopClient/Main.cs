@@ -45,33 +45,17 @@ namespace DesktopClient
 
             // Initialise the OAuth client...
             OAuthClient = new OAuthClient(
-                this,
                 Properties.Settings.Default.clientId,
                 Properties.Settings.Default.clientSecret,
                 Properties.Settings.Default.redirectUrl
             );
 
-            if (String.IsNullOrEmpty(OAuthClient.Token))
-            {
-                // Authenticate if required...
-                OAuthClient.AuthenticateAsync();
-            }
-            else
-            {
-                labelIsAuthenticated_Update(true);
-            }
-
             // Initailise the API client...
-            ApiClient = new ApiClient(OAuthClient);
-
-            // Load the list of bankers...
-            LoadBankersAsync();
+            ApiClient = new ApiClient();
 
             // Initialise the Guild Bank Addon class...
-            GuildBankAddon = new GuildBankAddon(Properties.Settings.Default.wowClassicDir, ApiClient);
-
-            // Begin watching the saved variables...
-            GuildBankAddon.Watch();
+            GuildBankAddon = new GuildBankAddon(ApiClient);
+            GuildBankAddon.SetDirectories(Properties.Settings.Default.wowClassicDir);
         }
 
         private void LoadRalewayFont()
@@ -97,15 +81,8 @@ namespace DesktopClient
             textBoxRedirectUrl.Text = Properties.Settings.Default.redirectUrl;
             textBoxClassicDir.Text = Properties.Settings.Default.wowClassicDir;
 
-            // Check if the addon is installed...
-            if (GuildBankAddon.Version != "none")
-            {
-                labelAddonIsInstalled.Text = $"Version installed: {GuildBankAddon.Version}";
-                labelAddonIsInstalled.ForeColor = SuccessColor;
-            }
-
             // Render fonts...
-            buttonAuthenticationSettingsSave.Font = RalewayFont12;
+            buttonLogin.Font = RalewayFont12;
             buttonBrowseToClassicFolder.Font = RalewayFont10;
             label1.Font = RalewayFont20;
             label2.Font = RalewayFont16;
@@ -120,18 +97,74 @@ namespace DesktopClient
             labelBankersList.Font = RalewayFont10;
             labelIsAuthenticated.Font = RalewayFont12;
             linkLabel1.Font = RalewayFont11;
+
+            // Attempt to authenticate...
+            AuthenticateAsync();
+
+            // Check if the addon is installed...
+            if (GuildBankAddon.IsInstalled())
+            {
+                labelAddonIsInstalled.Text = $"Version installed: {GuildBankAddon.Version}";
+                labelAddonIsInstalled.ForeColor = SuccessColor;
+            }
+        }
+        private async void AuthenticateAsync()
+        {
+            // Authenticate if required...
+            string authenticationCode = await OAuthClient.AuthenticateAsync();
+
+            if (! string.IsNullOrEmpty(authenticationCode))
+            {
+                // Exchange the authentication code for an access token...
+                string accessToken = await OAuthClient.GetAccessTokenAsync(authenticationCode);
+
+                // Update the API client is authentication was successful...
+                if (! string.IsNullOrEmpty(accessToken))
+                {
+                    ApiClient.SetAccessToken(accessToken);
+                }
+            }
+
+            // Bring this app back to the foreground...
+            Activate();
+
+            // Update the label to show whether or not the user has authenticated correctly...
+            labelIsAuthenticated_Update(OAuthClient.IsAuthenticated());
+
+            // Update the list of bankers...
+            GetBankersAsync();
         }
 
-        public async void LoadBankersAsync()
+        public async void GetBankersAsync()
         {
-            // Load the bankers from the API...
-            JObject response = await ApiClient.Get(ApiClient.BankersApiUrl);
-            JArray bankersArray = (JArray)response["bankers"];
-            List<Banker> bankers = bankersArray.ToObject<List<Banker>>();
+            if (OAuthClient.IsAuthenticated())
+            {
+                try
+                {
+                    // Load the bankers from the API...
+                    JObject response = await ApiClient.Get(ApiClient.BankersApiUrl);
+                    JArray bankersArray = (JArray)response["bankers"];
+                    List<Banker> bankers = bankersArray.ToObject<List<Banker>>();
 
+                    // Update the label containing the list of bankers...
+                    labelBankersList_Update(bankers);
+
+                    // Begin watching the saved variables...
+                    GuildBankAddon.Watch(bankers);
+                }
+                catch (NullReferenceException)
+                {
+                    // TODO: Implement logging...
+                }
+            } 
+        }
+
+        private void labelBankersList_Update(List<Banker> bankers)
+        {
             // Reset the text back to being empty...
             labelBankersList.Text = "";
 
+            // If the array of bankers has entries then loop over them and create a visible list.
             if (bankers.Count > 1)
             {
                 bankers.ForEach(banker =>
@@ -147,41 +180,32 @@ namespace DesktopClient
 
         private void textBoxClientId_TextChanged(object sender, EventArgs e)
         {
-            var newClientId = int.Parse(textBoxClientId.Text);
             try
             {
+                var newClientId = int.Parse(textBoxClientId.Text);
                 Properties.Settings.Default.clientId = newClientId;
+
+                OAuthClient.ClientId = newClientId;
+                Properties.Settings.Default.Save();
             }
             catch (FormatException)
             {
                 textBoxClientId.Text = null;
             }
-
-            OAuthClient.clientId = newClientId;
-            Properties.Settings.Default.Save();
         }
 
         private void textBoxClientSecret_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.clientSecret = textBoxClientSecret.Text;
-            OAuthClient.clientSecret = textBoxClientSecret.Text;
+            OAuthClient.ClientSecret = textBoxClientSecret.Text;
             Properties.Settings.Default.Save();
         }
 
         private void textBoxRedirectUrl_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.redirectUrl = textBoxRedirectUrl.Text;
-            OAuthClient.redirectUrl = textBoxRedirectUrl.Text;
+            OAuthClient.RedirectUrl = textBoxRedirectUrl.Text;
             Properties.Settings.Default.Save();
-        }
-
-        private void buttonAuthenticationSettingsSave_Click(object sender, EventArgs e)
-        {
-            // Resave the settings to file...
-            Properties.Settings.Default.Save();
-
-            // Reauthenticate using the new settings...
-            OAuthClient.AuthenticateAsync();
         }
 
         public void labelIsAuthenticated_Update(bool isLoggedIn)
@@ -230,7 +254,25 @@ namespace DesktopClient
                 textBoxClassicDir.Text = path;
                 Properties.Settings.Default.wowClassicDir = path;
                 Properties.Settings.Default.Save();
+
+                // Update the directories...
+                GuildBankAddon.SetDirectories(path);
+
+                if (GuildBankAddon.IsInstalled())
+                {
+                    labelAddonIsInstalled.Text = $"Version installed: {GuildBankAddon.Version}";
+                    labelAddonIsInstalled.ForeColor = SuccessColor;
+                }
             }
+        }
+
+        private void buttonLogin_Click(object sender, EventArgs e)
+        {
+            // Resave the settings to file...
+            Properties.Settings.Default.Save();
+
+            // Reauthenticate using the new settings...
+            AuthenticateAsync();
         }
     }
 }

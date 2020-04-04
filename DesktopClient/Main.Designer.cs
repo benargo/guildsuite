@@ -37,12 +37,12 @@
             this.textBoxClientId = new System.Windows.Forms.TextBox();
             this.groupBoxAuthenticationSettings = new System.Windows.Forms.GroupBox();
             this.textBoxRedirectUrl = new System.Windows.Forms.TextBox();
+            this.buttonLogin = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxClientSecret = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.buttonAuthenticationSettingsSave = new System.Windows.Forms.Button();
             this.groupBoxAuthenticationStatus = new System.Windows.Forms.GroupBox();
             this.labelIsAuthenticated = new System.Windows.Forms.Label();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
@@ -123,7 +123,7 @@
             // 
             this.groupBoxAuthenticationSettings.BackColor = System.Drawing.Color.Transparent;
             this.groupBoxAuthenticationSettings.Controls.Add(this.textBoxRedirectUrl);
-            this.groupBoxAuthenticationSettings.Controls.Add(this.buttonAuthenticationSettingsSave);
+            this.groupBoxAuthenticationSettings.Controls.Add(this.buttonLogin);
             this.groupBoxAuthenticationSettings.Controls.Add(this.label5);
             this.groupBoxAuthenticationSettings.Controls.Add(this.textBoxClientSecret);
             this.groupBoxAuthenticationSettings.Controls.Add(this.label4);
@@ -150,6 +150,23 @@
             this.textBoxRedirectUrl.Size = new System.Drawing.Size(244, 25);
             this.textBoxRedirectUrl.TabIndex = 5;
             this.textBoxRedirectUrl.TextChanged += new System.EventHandler(this.textBoxRedirectUrl_TextChanged);
+            // 
+            // buttonLogin
+            // 
+            this.buttonLogin.AutoSize = true;
+            this.buttonLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(183)))), ((int)(((byte)(0)))));
+            this.buttonLogin.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLogin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.buttonLogin.Location = new System.Drawing.Point(6, 285);
+            this.buttonLogin.Name = "buttonLogin";
+            this.buttonLogin.Padding = new System.Windows.Forms.Padding(5);
+            this.buttonLogin.Size = new System.Drawing.Size(244, 40);
+            this.buttonLogin.TabIndex = 6;
+            this.buttonLogin.Text = "Login";
+            this.buttonLogin.UseVisualStyleBackColor = false;
+            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
             // 
             // label5
             // 
@@ -207,23 +224,6 @@
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "You can obtain your Client ID and Secret from The Order\'s website.";
             this.linkLabel1.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(155)))), ((int)(((byte)(0)))));
-            // 
-            // buttonAuthenticationSettingsSave
-            // 
-            this.buttonAuthenticationSettingsSave.AutoSize = true;
-            this.buttonAuthenticationSettingsSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(183)))), ((int)(((byte)(0)))));
-            this.buttonAuthenticationSettingsSave.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonAuthenticationSettingsSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonAuthenticationSettingsSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAuthenticationSettingsSave.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            this.buttonAuthenticationSettingsSave.Location = new System.Drawing.Point(6, 285);
-            this.buttonAuthenticationSettingsSave.Name = "buttonAuthenticationSettingsSave";
-            this.buttonAuthenticationSettingsSave.Padding = new System.Windows.Forms.Padding(5);
-            this.buttonAuthenticationSettingsSave.Size = new System.Drawing.Size(244, 40);
-            this.buttonAuthenticationSettingsSave.TabIndex = 6;
-            this.buttonAuthenticationSettingsSave.Text = "Login";
-            this.buttonAuthenticationSettingsSave.UseVisualStyleBackColor = false;
-            this.buttonAuthenticationSettingsSave.Click += new System.EventHandler(this.buttonAuthenticationSettingsSave_Click);
             // 
             // groupBoxAuthenticationStatus
             // 
@@ -457,7 +457,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxRedirectUrl;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button buttonAuthenticationSettingsSave;
+        private System.Windows.Forms.Button buttonLogin;
         private System.Windows.Forms.GroupBox groupBoxAuthenticationStatus;
         private System.Windows.Forms.Label labelIsAuthenticated;
         private System.Windows.Forms.NotifyIcon notifyIcon;

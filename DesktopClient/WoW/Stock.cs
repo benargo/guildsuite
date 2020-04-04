@@ -12,7 +12,9 @@ namespace DesktopClient.WoW
 
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(new Dictionary<string, Stock>(){
+                { "stock", this }
+            });
         }
 
         public async void Post(ApiClient apiClient, string json)
@@ -24,7 +26,7 @@ namespace DesktopClient.WoW
             };
 
             // Make the API request...
-            JObject response = await apiClient.Post(ApiClient.UpdateStockApiUrl, formData);
+            JObject _ = await apiClient.Post(ApiClient.UpdateStockApiUrl, formData);
             
             // We don't want to do anything with the response, so finish here...
         }

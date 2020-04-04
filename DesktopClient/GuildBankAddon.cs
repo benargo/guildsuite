@@ -11,20 +11,33 @@ namespace DesktopClient
 {
 	public class GuildBankAddon
 	{
-		private readonly ApiClient ApiClient;
+		public ApiClient ApiClient;
+
+		// Directories...
 		public string AddonDirectory;
 		public string WtfDirectory;
 		public string Version = "none";
 
-		public GuildBankAddon(string classicDir, ApiClient apiClient)
+		public GuildBankAddon(ApiClient apiClient)
 		{
-			AddonDirectory = classicDir + "\\Interface\\Addons\\GuildBank";
-			WtfDirectory = classicDir + "\\WTF\\Account\\474839284#1\\Pyrewood Village";
 			ApiClient = apiClient;
+		}
 
-			if (IsInstalled())
+		public void SetDirectories(string classicDir)
+		{
+			if (classicDir.Length > 0)
 			{
-				Version = File.ReadAllText(AddonDirectory + "\\version");
+				AddonDirectory = classicDir + "\\Interface\\Addons\\GuildBank";
+				WtfDirectory = classicDir + "\\WTF\\Account\\474839284#1\\Pyrewood Village";
+
+				try
+				{
+					Version = File.ReadAllText(AddonDirectory + "\\version");
+				}
+				catch (FileNotFoundException)
+				{
+					Version = "none";
+				}
 			}
 		}
 
@@ -33,15 +46,11 @@ namespace DesktopClient
 			return File.Exists(AddonDirectory + "\\version");
 		}
 
-		public async void Watch()
+		public void Watch(List<Banker> bankers)
 		{
+			// Check that the WTF directory exists, this is where the guild bank data is stored...
 			if (Directory.Exists(WtfDirectory))
 			{
-				// Load the list of bankers from the API...
-				JObject response = await ApiClient.Get(ApiClient.BankersApiUrl);
-				JArray bankersArray = (JArray)response["bankers"];
-				List<Banker> bankers = bankersArray.ToObject<List<Banker>>();
-
 				// Create an array of watchers to look for file changes...
 				List<FileSystemWatcher> watchers = new List<FileSystemWatcher>();
 
@@ -85,20 +94,23 @@ namespace DesktopClient
 
 			// Process the mailbox...
 			Table mailbox = dv.Table.Get("Mail").Table;
-			foreach (var envelope in mailbox.Values)
+			if (mailbox != null)
 			{
-				var items = envelope.Table;
-				foreach (var itemTable in items.Values)
+				foreach (var envelope in mailbox.Values)
 				{
-					Item itemObject = new Item();
-					itemObject.mail = (int)itemTable.Table.Get("mail").CastToNumber();
-					itemObject.count = (int)itemTable.Table.Get("count").CastToNumber();
-					itemObject.slot = (int)itemTable.Table.Get("slot").CastToNumber();
-					itemObject.id = (int)itemTable.Table.Get("id").CastToNumber();
-					itemObject.owner = itemTable.Table.Get("owner").CastToString();
-					itemObject.name = itemTable.Table.Get("name").CastToString();
-					itemObject.link = itemTable.Table.Get("link").CastToString();
-					stock.mail.Add(itemObject);
+					var items = envelope.Table;
+					foreach (var itemTable in items.Values)
+					{
+						Item itemObject = new Item();
+						itemObject.mail = (int)itemTable.Table.Get("mail").CastToNumber();
+						itemObject.count = (int)itemTable.Table.Get("count").CastToNumber();
+						itemObject.slot = (int)itemTable.Table.Get("slot").CastToNumber();
+						itemObject.id = (int)itemTable.Table.Get("id").CastToNumber();
+						itemObject.banker_name = itemTable.Table.Get("banker_name").CastToString();
+						itemObject.name = itemTable.Table.Get("name").CastToString();
+						itemObject.link = itemTable.Table.Get("link").CastToString();
+						stock.mail.Add(itemObject);
+					}
 				}
 			}
 
@@ -109,14 +121,43 @@ namespace DesktopClient
 				var items = bag.Table;
 				foreach (var itemTable in items.Values)
 				{
+					// Create a new item instance...
 					Item itemObject  = new Item();
+
+					// Get the banker's name...
+					itemObject.banker_name = itemTable.Table.Get("banker_name").CastToString();
+
+					// Get the bag number...
 					itemObject.bag   = (int)itemTable.Table.Get("bag").CastToNumber();
-					itemObject.count = (int)itemTable.Table.Get("count").CastToNumber();
-					itemObject.slot  = (int)itemTable.Table.Get("slot").CastToNumber();
-					itemObject.id    = (int)itemTable.Table.Get("id").CastToNumber();
-					itemObject.owner = itemTable.Table.Get("owner").CastToString();
-					itemObject.name  = itemTable.Table.Get("name").CastToString();
-					itemObject.link  = itemTable.Table.Get("link").CastToString();
+
+					// Get the slot number in this bag...
+					itemObject.slot = (int)itemTable.Table.Get("slot").CastToNumber();
+
+					// Get the item's ID number, if there is one...
+					if (itemTable.Table.Get("id").IsNotNil())
+					{
+						itemObject.id = (int)itemTable.Table.Get("id").CastToNumber();
+					}
+
+					// Get the quantity of the item in this stack, if there are any...
+					if (itemTable.Table.Get("count").IsNotNil())
+					{
+						itemObject.count = (int)itemTable.Table.Get("count").CastToNumber();
+					}
+					
+					// Get the item's name, if there is one...
+					if (itemTable.Table.Get("name").IsNotNil())
+					{
+						itemObject.name = itemTable.Table.Get("name").CastToString();
+					}
+
+					// Get the in-game link to the item, if there is one...
+					if (itemTable.Table.Get("link").IsNotNil())
+					{
+						itemObject.link = itemTable.Table.Get("link").CastToString();
+					}
+	
+					// Add the newly created object to the array...
 					stock.bags.Add(itemObject);
 				}
 			}
@@ -124,7 +165,7 @@ namespace DesktopClient
 			// Organise the data and convert into JSON...
 			string stockAsJson = stock.ToJson();
 
-			// Prepare the API request...
+			// Send the API request...
 			stock.Post(ApiClient, stockAsJson);
 		}
 	}

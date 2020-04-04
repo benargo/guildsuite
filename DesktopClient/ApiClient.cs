@@ -13,16 +13,14 @@ namespace DesktopClient
 {
     public class ApiClient
     {
-        private readonly OAuthClient OAuthClient;
-        private readonly string AuthorizationHeader;
+        private string AuthorizationHeader;
 
         public const string BankersApiUrl = "https://theorder.gg/api/guild-bank/bankers";
         public const string UpdateStockApiUrl = "https://theorder.gg/api/guild-bank/stock/update";
 
-        public ApiClient(OAuthClient client)
+        public void SetAccessToken(string token)
         {
-            OAuthClient = client;
-            AuthorizationHeader = $"Bearer {OAuthClient.Token}";
+            AuthorizationHeader = $"Bearer {token}";
         }
 
         public async Task<JObject> Get(string url)
