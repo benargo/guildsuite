@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,15 +77,21 @@ namespace DesktopClient
         /// <param name="e">The exception thrown that is to be displayed</param>
         public static void DisplayException(Exception e)
         {
-            CurrentLogMessage += "Exception thrown by " + e.Source + " at " + e.StackTrace + ".\n";
-            CurrentLogMessage += "Exception message : " + e.Message + "\n.";
-            CurrentLogMessage += "Data : " + "\n";
+            CurrentLogMessage += "Exception thrown by " + e.Source + " with immediate stack trace:\n" + e.StackTrace + ".\n\n";
+            CurrentLogMessage += "Exception message : " + e.Message + "\n\n.";
+            CurrentLogMessage += "Exception target site : " + e.TargetSite + "\n\n";
 
-            foreach (KeyValuePair<string,string> data in e.Data)
+            if (e.Data.Count > 0)
             {
-                CurrentLogMessage += data.Key + " : " + data.Value + "\n";
-            }
+                CurrentLogMessage += "Data : " + "\n";
 
+                foreach (DictionaryEntry data in e.Data)
+                {
+                    CurrentLogMessage += data.Key.ToString() + " : " + data.Value.ToString() + "\n";
+                }
+
+            }
+          
             Display();
         }
 
