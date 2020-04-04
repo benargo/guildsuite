@@ -67,6 +67,7 @@
     <Compile Include="OAuthClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="WoW\Stock.cs" />
     <Compile Include="WoW\Item.cs" />
     <EmbeddedResource Include="Main.resx">

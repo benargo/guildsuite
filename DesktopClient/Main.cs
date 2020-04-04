@@ -75,6 +75,9 @@ namespace DesktopClient
 
         private void Main_Load(object sender, EventArgs e)
         {
+            // Instantiating objects ...
+            Log.LogTextBox = textBoxLog;
+
             // Update text...
             textBoxClientId.Text = Properties.Settings.Default.clientId.ToString();
             textBoxClientSecret.Text = Properties.Settings.Default.clientSecret;

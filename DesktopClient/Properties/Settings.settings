@@ -6,7 +6,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="clientId" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="clientSecret" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
