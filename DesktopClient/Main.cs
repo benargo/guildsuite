@@ -79,14 +79,17 @@ namespace DesktopClient
             Log.LogTextBox = textBoxLog;
 
             // Update text...
+            checkBoxDebugMode.Checked = Properties.Settings.Default.debugMode;
             textBoxClientId.Text = Properties.Settings.Default.clientId.ToString();
             textBoxClientSecret.Text = Properties.Settings.Default.clientSecret;
             textBoxRedirectUrl.Text = Properties.Settings.Default.redirectUrl;
             textBoxClassicDir.Text = Properties.Settings.Default.wowClassicDir;
 
             // Render fonts...
-            buttonLogin.Font = RalewayFont12;
             buttonBrowseToClassicFolder.Font = RalewayFont10;
+            buttonClearLog.Font = RalewayFont10;
+            buttonLogin.Font = RalewayFont12;
+            checkBoxDebugMode.Font = RalewayFont11;
             label1.Font = RalewayFont20;
             label2.Font = RalewayFont16;
             label3.Font = RalewayFont11;
@@ -100,7 +103,7 @@ namespace DesktopClient
             labelBankersList.Font = RalewayFont10;
             labelIsAuthenticated.Font = RalewayFont12;
             linkLabel1.Font = RalewayFont11;
-
+            
             // Attempt to authenticate...
             AuthenticateAsync();
 
@@ -110,9 +113,13 @@ namespace DesktopClient
                 labelAddonIsInstalled.Text = $"Version installed: {GuildBankAddon.Version}";
                 labelAddonIsInstalled.ForeColor = SuccessColor;
             }
+
+            Log.Debug("Application loaded.");
         }
         private async void AuthenticateAsync()
         {
+            Log.Debug("Attempting authentication...");
+
             // Authenticate if required...
             string authenticationCode = await OAuthClient.AuthenticateAsync();
 
@@ -133,6 +140,8 @@ namespace DesktopClient
 
             // Update the label to show whether or not the user has authenticated correctly...
             labelIsAuthenticated_Update(OAuthClient.IsAuthenticated());
+
+            Log.Debug($"Authentication {(OAuthClient.IsAuthenticated() ? "successful" : "failed")}.");
 
             // Update the list of bankers...
             GetBankersAsync();
@@ -155,11 +164,11 @@ namespace DesktopClient
                     // Begin watching the saved variables...
                     GuildBankAddon.Watch(bankers);
                 }
-                catch (NullReferenceException)
+                catch (NullReferenceException ex)
                 {
-                    // TODO: Implement logging...
+                    Log.Error(ex);
                 }
-            } 
+            }
         }
 
         private void labelBankersList_Update(List<Banker> bankers)
@@ -276,6 +285,17 @@ namespace DesktopClient
 
             // Reauthenticate using the new settings...
             AuthenticateAsync();
+        }
+
+        private void checkBoxDebugMode_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.debugMode = checkBoxDebugMode.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void buttonClearLog_Click(object sender, EventArgs e)
+        {
+            Log.ClearLogWindow();
         }
     }
 }

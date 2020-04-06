@@ -11,6 +11,9 @@
     <Setting Name="clientSecret" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="debugMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="redirectUrl" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://localhost:9000/</Value>
     </Setting>

@@ -58,6 +58,8 @@
             this.labelBankersList = new System.Windows.Forms.Label();
             this.groupBoxGuildBank = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonClearLog = new System.Windows.Forms.Button();
+            this.checkBoxDebugMode = new System.Windows.Forms.CheckBox();
             this.textBoxLog = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBoxAuthenticationSettings.SuspendLayout();
@@ -282,7 +284,7 @@
             this.buttonBrowseToClassicFolder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
             this.buttonBrowseToClassicFolder.Location = new System.Drawing.Point(175, 64);
             this.buttonBrowseToClassicFolder.Name = "buttonBrowseToClassicFolder";
-            this.buttonBrowseToClassicFolder.Size = new System.Drawing.Size(75, 25);
+            this.buttonBrowseToClassicFolder.Size = new System.Drawing.Size(75, 30);
             this.buttonBrowseToClassicFolder.TabIndex = 8;
             this.buttonBrowseToClassicFolder.Text = "Browse...";
             this.buttonBrowseToClassicFolder.UseVisualStyleBackColor = false;
@@ -294,7 +296,7 @@
             this.textBoxClassicDir.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxClassicDir.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxClassicDir.ForeColor = System.Drawing.Color.White;
-            this.textBoxClassicDir.Location = new System.Drawing.Point(7, 64);
+            this.textBoxClassicDir.Location = new System.Drawing.Point(10, 68);
             this.textBoxClassicDir.Name = "textBoxClassicDir";
             this.textBoxClassicDir.ReadOnly = true;
             this.textBoxClassicDir.Size = new System.Drawing.Size(162, 25);
@@ -386,6 +388,8 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.buttonClearLog);
+            this.groupBox1.Controls.Add(this.checkBoxDebugMode);
             this.groupBox1.Controls.Add(this.textBoxLog);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.White;
@@ -396,16 +400,45 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Log";
             // 
+            // buttonClearLog
+            // 
+            this.buttonClearLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(183)))), ((int)(((byte)(0)))));
+            this.buttonClearLog.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonClearLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonClearLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.buttonClearLog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.buttonClearLog.Location = new System.Drawing.Point(169, 25);
+            this.buttonClearLog.Name = "buttonClearLog";
+            this.buttonClearLog.Size = new System.Drawing.Size(81, 30);
+            this.buttonClearLog.TabIndex = 9;
+            this.buttonClearLog.Text = "Clear log";
+            this.buttonClearLog.UseVisualStyleBackColor = false;
+            this.buttonClearLog.Click += new System.EventHandler(this.buttonClearLog_Click);
+            // 
+            // checkBoxDebugMode
+            // 
+            this.checkBoxDebugMode.AutoSize = true;
+            this.checkBoxDebugMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxDebugMode.Location = new System.Drawing.Point(6, 29);
+            this.checkBoxDebugMode.Name = "checkBoxDebugMode";
+            this.checkBoxDebugMode.Size = new System.Drawing.Size(112, 22);
+            this.checkBoxDebugMode.TabIndex = 2;
+            this.checkBoxDebugMode.Text = "Debug mode";
+            this.checkBoxDebugMode.UseVisualStyleBackColor = true;
+            this.checkBoxDebugMode.CheckedChanged += new System.EventHandler(this.checkBoxDebugMode_CheckedChanged);
+            // 
             // textBoxLog
             // 
             this.textBoxLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(26)))), ((int)(((byte)(19)))));
             this.textBoxLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxLog.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLog.Location = new System.Drawing.Point(7, 26);
+            this.textBoxLog.ForeColor = System.Drawing.Color.White;
+            this.textBoxLog.Location = new System.Drawing.Point(6, 61);
             this.textBoxLog.Multiline = true;
             this.textBoxLog.Name = "textBoxLog";
             this.textBoxLog.ReadOnly = true;
-            this.textBoxLog.Size = new System.Drawing.Size(243, 360);
+            this.textBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxLog.Size = new System.Drawing.Size(244, 325);
             this.textBoxLog.TabIndex = 0;
             // 
             // Main
@@ -474,6 +507,8 @@
         private System.Windows.Forms.GroupBox groupBoxGuildBank;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox textBoxLog;
+        private System.Windows.Forms.CheckBox checkBoxDebugMode;
+        private System.Windows.Forms.Button buttonClearLog;
     }
 }
 

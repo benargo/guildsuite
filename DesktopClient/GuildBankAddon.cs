@@ -1,11 +1,7 @@
 ﻿using MoonSharp.Interpreter;
-using Newtonsoft.Json;
 using DesktopClient.WoW;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using Newtonsoft.Json.Linq;
 
 namespace DesktopClient
 {
@@ -34,8 +30,14 @@ namespace DesktopClient
 				{
 					Version = File.ReadAllText(AddonDirectory + "\\version");
 				}
-				catch (FileNotFoundException)
+				catch (FileNotFoundException ex)
 				{
+					Log.Warn(ex);
+					Version = "none";
+				}
+				catch (DirectoryNotFoundException ex)
+				{
+					Log.Warn(ex);
 					Version = "none";
 				}
 			}
@@ -88,6 +90,9 @@ namespace DesktopClient
 
 		private void BankerFileOnChanged(object source, FileSystemEventArgs e)
 		{
+			// Send a log message that the file has been changed...
+			Log.Event($"File modified: '{e.FullPath}'");
+
 			Stock stock = new Stock();
 			Script s = new Script(CoreModules.Preset_Complete);
 			DynValue dv = s.DoString(File.ReadAllText(e.FullPath) + "\nreturn Stock;");
@@ -167,6 +172,9 @@ namespace DesktopClient
 
 			// Send the API request...
 			stock.Post(ApiClient, stockAsJson);
+
+			// Post a log message...
+			Log.Info("Updates posted to web server.");
 		}
 	}
 }
