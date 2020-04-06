@@ -1,6 +1,6 @@
 ## Interface: 11302
 ## Title: Guild Bank
-## Version: 1.0.2
+## Version: 1.0.3
 ## Notes: Guild Bank addon for <The Order>
 ## Author: Alex, Ben
 ## SavedVariablesPerCharacter: InterfaceOptions, Stock

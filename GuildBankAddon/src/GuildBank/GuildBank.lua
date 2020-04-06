@@ -65,45 +65,47 @@ GuildBank:SetScript("OnEvent", function(self, event, arg1)
 end)
 
 function GuildBank:CheckMail()
-    local NumMails, TotalMails = GetInboxNumItems()
-    local MailboxSlot = 1
+    if InterfaceOptions.enableProfiling then
+        local NumMails, TotalMails = GetInboxNumItems()
+        local MailboxSlot = 1
 
-    if ( TotalMails > NumMails ) then
-        -- Send this message regardless...
-        local NumToRemove = TotalMails - NumMails
-        Debug:message("Total number of mailbox items exceeds those currently displayed. Please remove ".. tostring(NumToRemove) .. " items before continuing")
+        if ( TotalMails > NumMails ) then
+            -- Send this message regardless...
+            local NumToRemove = TotalMails - NumMails
+            Debug:message("Total number of mailbox items exceeds those currently displayed. Please remove ".. tostring(NumToRemove) .. " items before continuing")
 
-        -- Cancel any further execution...
-        return
-    end
+            -- Cancel any further execution...
+            return
+        end
 
-    -- Reset the Mailbox index...
-    MyStock:ReindexMailbox()
+        -- Reset the Mailbox index...
+        MyStock:ReindexMailbox()
 
-    -- loop through the current mailbox items...
-    for MailboxIndex = 1, NumMails do
-        local _,_,_,_,_,_,_,hasItem = GetInboxHeaderInfo(MailboxIndex)
+        -- loop through the current mailbox items...
+        for MailboxIndex = 1, NumMails do
+            local _,_,_,_,_,_,_,hasItem = GetInboxHeaderInfo(MailboxIndex)
 
-        if hasItem then
-            for ItemIndex = 1, hasItem do
-                Debug:printLine("Parsing mailbox index |cffe83e8c".. tostring(MailboxIndex) .."|r, item index |cffe83e8c".. tostring(ItemIndex) .."|r.")
-                local _,ItemId,_,ItemCount = GetInboxItem(MailboxIndex, ItemIndex)
+            if hasItem then
+                for ItemIndex = 1, hasItem do
+                    Debug:printLine("Parsing mailbox index |cffe83e8c".. tostring(MailboxIndex) .."|r, item index |cffe83e8c".. tostring(ItemIndex) .."|r.")
+                    local _,ItemId,_,ItemCount = GetInboxItem(MailboxIndex, ItemIndex)
 
-                if ItemCount then
-                    local CurrentItem = Item:NewById(ItemId)
+                    if ItemCount then
+                        local CurrentItem = Item:NewById(ItemId)
 
-                    -- Set the stack size of the current item...
-                    CurrentItem.count = ItemCount
-                    CurrentItem.mail  = MailboxIndex
-                    CurrentItem.slot  = ItemIndex
-                    CurrentItem.owner = UnitName("player")
+                        -- Set the stack size of the current item...
+                        CurrentItem.count = ItemCount
+                        CurrentItem.mail  = MailboxIndex
+                        CurrentItem.slot  = ItemIndex
+                        CurrentItem.owner = UnitName("player")
 
-                    -- Insert Item model into table of items...
-                    MyStock:AddMailItem(MailboxIndex, ItemIndex, CurrentItem)
-                    Debug:printLine("|cff00ff00Item inserted!|r")
+                        -- Insert Item model into table of items...
+                        MyStock:AddMailItem(MailboxIndex, ItemIndex, CurrentItem)
+                        Debug:printLine("|cff00ff00Item inserted!|r")
 
-                    -- Increment the MailboxSlot variable...
-                    MailboxSlot = MailboxSlot + 1
+                        -- Increment the MailboxSlot variable...
+                        MailboxSlot = MailboxSlot + 1
+                    end
                 end
             end
         end

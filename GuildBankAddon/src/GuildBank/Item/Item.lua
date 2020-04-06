@@ -26,9 +26,9 @@ Item.__index = Item
 -- Return: Item
 --
 function Item:__construct()
-    local self = {}
-    setmetatable({}, Item)
-    return self
+    local obj = {}
+    setmetatable(obj, Item)
+    return obj
 end
 
 -- Create new Item model by bag slot
