@@ -1,0 +1,8 @@
+C:\Users\Alexander\Documents\GitHub\guildsuite\DesktopClient\bin\x64\Release\DesktopClient.exe
+C:\Users\Alexander\Documents\GitHub\guildsuite\DesktopClient\bin\x64\Release\DesktopClient.exe.config
+C:\Users\Alexander\Documents\GitHub\guildsuite\DesktopClient\bin\x64\Release\DesktopClient.pdb
+C:\Users\Alexander\Documents\GitHub\guildsuite\DesktopClient\bin\x64\Release\Newtonsoft.Json.dll
+C:\Users\Alexander\Documents\GitHub\guildsuite\DesktopClient\bin\x64\Release\Newtonsoft.Json.xml
+C:\Users\Alexander\Documents\GitHub\guildsuite\DesktopClient\bin\x64\Release\MoonSharp.Interpreter.dll
+C:\Users\Alexander\Documents\GitHub\guildsuite\DesktopClient\bin\x64\Release\MoonSharp.Interpreter.pdb
+C:\Users\Alexander\Documents\GitHub\guildsuite\DesktopClient\bin\x64\Release\MoonSharp.Interpreter.xml

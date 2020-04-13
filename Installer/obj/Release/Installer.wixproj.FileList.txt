@@ -1,0 +1,9 @@
+obj\Release\Components.wixobj
+obj\Release\Directories.wixobj
+obj\Release\Product.wixobj
+C:\Users\Alexander\Documents\GitHub\guildsuite\Installer\bin\Release\en-us\cab1.cab
+C:\Users\Alexander\Documents\GitHub\guildsuite\Installer\bin\Release\en-us\Installer.msi
+C:\Users\Alexander\Documents\GitHub\guildsuite\Installer\bin\Release\en-us\Installer.wixpdb
+obj\Release\Installer.wixproj.BindContentsFileListen-us.txt
+obj\Release\Installer.wixproj.BindOutputsFileListen-us.txt
+obj\Release\Installer.wixproj.BindBuiltOutputsFileListen-us.txt

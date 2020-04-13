@@ -1,1 +1,1 @@
-C:\Users\Alexander\Documents\GitHub\guildsuite\DesktopClient\bin\Debug\DesktopClient.exe
+C:\Users\Alexander\Documents\GitHub\guildsuite\DesktopClient\bin\x64\Debug\DesktopClient.exe

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  
 	<String Id="ProductName_x86">The Order Guildbank Desktop Client 32-bit</String>
   <String Id="ProductName_x64">The Order Guildbank Desktop Client 64-bit</String>
   <String Id="Language">1033</String>
   <String Id="GuildName">The Order</String>
+
+  <String Id="Description">Installer for the Desktop Guildbank Application for The Order</String>
+  <String Id="Comments">Written by Ben Argo and Alexander T Klungerbo</String>
+  <String Id="Keywords">The Order,Guildbank AddOn,Classic WoW</String>
+  
 </WixLocalization>

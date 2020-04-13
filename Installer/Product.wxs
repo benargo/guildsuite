@@ -10,39 +10,49 @@
   <?define UpgradeCode = "{0a59542e-7a9d-4ede-80c8-de6f6527c230}" ?>
   <?define BuildVersion = 1.0.0.0 ?>
   
+  <!-- Product vars and stuffs -->
 	<Product Id="$(var.ProductCode)" 
            Name="!(loc.ProductName_$(var.Platform))" 
            Language="!(loc.Language)" 
            Version="$(var.BuildVersion)" 
            Manufacturer="!(loc.GuildName)" 
            UpgradeCode="$(var.ProductCode)">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    
+    <!-- Package details -->
+		<Package InstallerVersion="200" 
+             Compressed="yes" 
+             InstallScope="perMachine" 
+             Manufacturer="!(loc.GuildName)"
+             Description="!(loc.Description)"
+             Keywords="!(loc.Keywords)"
+             Comments="!(loc.Comments)"
+             />
 
+    <!-- Error message in case of updated version -->
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+    
+    <!-- We can inlcude a .cab file in the .msi file here -->
+    <MediaTemplate />
+      <!-- EmbedCap="yes" -->
 
+
+    <!-- Icon property for the installer -->
+    <Icon Id="icon.ico" SourceFile="$(var.DesktopClient.ProjectDir)Resources\app_icon_192.png" />
+
+    <!-- Use the Id of the Icon property above for this -->
+    <Property Id="APPPRODUCTICON">icon.ico</Property>
+    <Property Id="APPURLINFOABOUT">https://theorder.gg/bank</Property>
+
+    <!-- Create a basic UI for our installer -->
+    <UIRef Id="WixUI_Minimal" />
+    
+    <!-- Components, files, and other resources that are included in the installer -->
 		<Feature Id="ProductFeature" Title="Installer" Level="1">
+      
 			<ComponentGroupRef Id="ProductComponents" />
+      
 		</Feature>
+    
 	</Product>
 
-	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="Installer" />
-			</Directory>
-		</Directory>
-	</Fragment>
-
-	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-			<!-- <Component Id="ProductComponent"> -->
-      <Component Id="ProductComponent">
-				<!-- TODO: Insert files, registry keys, and other resources here. -->
-        <File Source ="$(var.DesktopClient.TargetPath)" />
-      </Component>
-      <!-- </Component> -->
-		</ComponentGroup>
-	</Fragment>
 </Wix>

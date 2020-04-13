@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+
+      <Component Id="ProductComponent">
+        <!-- TODO: Insert files, registry keys, and other resources here. -->
+        <File Id="ClientExecutable" Source ="$(var.DesktopClient.ProjectDir)bin\x64\Release\DesktopClient.exe" />
+      </Component>
+      
+      <Component Id="ClientExecutableConfigComponent">
+        <File Id="ClientExecutableConfig" Source ="$(var.DesktopClient.ProjectDir)bin\x64\Release\DesktopClient.exe.config" />
+      </Component>
+
+      <Component Id="ClientpdbComponent">
+        <File Id="Clientpdb" Source ="$(var.DesktopClient.ProjectDir)bin\x64\Release\DesktopClient.pdb" />
+      </Component>
+
+      <Component Id="MoonSharpInterpreterDllComponent">
+        <File Id="MoonSharpInterpreterDll" Source ="$(var.DesktopClient.ProjectDir)bin\x64\Release\MoonSharp.Interpreter.dll" />
+      </Component>
+
+      <Component Id="MoonSharpInterpreterPdbComponent">
+        <File Id="MoonSharpInterpreterPdb" Source ="$(var.DesktopClient.ProjectDir)bin\x64\Release\MoonSharp.Interpreter.pdb" />
+      </Component>
+
+      <Component Id="MoonSharpInterpreterXmlComponent">
+        <File Id="MoonSharpInterpreterXml" Source ="$(var.DesktopClient.ProjectDir)bin\x64\Release\MoonSharp.Interpreter.xml" />
+      </Component>
+
+      <Component Id="JSONDllComponent">
+        <File Id="JSONDll" Source ="$(var.DesktopClient.ProjectDir)bin\x64\Release\Newtonsoft.Json.dll" />
+      </Component>
+
+      <Component Id="JSONXmlComponent">
+        <File Id="JSONXml" Source ="$(var.DesktopClient.ProjectDir)bin\x64\Release\Newtonsoft.Json.xml" />
+      </Component>
+
+
+    </ComponentGroup>
+  </Fragment>
+  
+</Wix>
