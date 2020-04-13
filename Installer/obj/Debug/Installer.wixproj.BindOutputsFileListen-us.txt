@@ -1,0 +1,3 @@
+C:\Users\Alexander\Documents\GitHub\guildsuite\Installer\bin\Debug\en-us\cab1.cab
+C:\Users\Alexander\Documents\GitHub\guildsuite\Installer\bin\Debug\en-us\Installer.msi
+C:\Users\Alexander\Documents\GitHub\guildsuite\Installer\bin\Debug\en-us\Installer.wixpdb
